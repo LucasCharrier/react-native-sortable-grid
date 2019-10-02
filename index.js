@@ -30,6 +30,7 @@ class Block extends Component {
         style          = {{ flex: 1 }}
         delayLongPress = { this.props.delayLongPress }
         onLongPress    = { () => this.props.inactive || this.props.onLongPress() }
+        onPressOut = { this.props.onPressOut }
         onPress        = { () => this.props.inactive || this.props.onPress() }>
 
           <View style={styles.itemImageContainer}>
@@ -61,6 +62,13 @@ class SortableGrid extends Component {
               delayLongPress = { this.dragActivationTreshold }
               onLongPress = { this.activateDrag(key) }
               onPress = { this.handleTap(item.props) }
+              onPressOut = { 
+                () => {
+                  if (!this.startMove) {
+                    this.onDragRelease({ itemOrder: this.itemOrder })
+                  }
+                }
+              }
               itemWrapperStyle = { this._getItemWrapperStyle(key) }
               deletionView = { this._getDeletionView(key) }
               inactive = { item.props.inactive }
@@ -141,6 +149,7 @@ class SortableGrid extends Component {
 
   onStartDrag = (evt, gestureState) => {
     if (this.state.activeBlock != null) {
+      this.startMove = true
       let activeBlockPosition = this._getActiveBlock().origin
       let x = activeBlockPosition.x - gestureState.x0
       let y = activeBlockPosition.y - gestureState.y0
