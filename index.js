@@ -363,8 +363,9 @@ class SortableGrid extends Component {
 
   activateDrag = (key) => () => {
     this.panCapture = true
-    this.onDragStart( this.itemOrder[key] )
-    this.setState({ activeBlock: key })
+    this.setState({ activeBlock: key }, () => {
+      this.onDragStart( this.itemOrder[key] )
+    })
     this._defaultDragActivationWiggle()
   }
 
