@@ -273,6 +273,7 @@ class SortableGrid extends Component {
   afterDragRelease = () => {
     let itemOrder = _.sortBy( this.itemOrder, item => item.order )
     this.onDragRelease({ itemOrder })
+    this.startMove = false
     this.setState({ activeBlock: null })
     this.panCapture = false
   }
@@ -289,7 +290,6 @@ class SortableGrid extends Component {
   }
 
   assessGridSize = ({nativeEvent}) => {
-    console.log("Calculating grid size");
     if (this.props.itemWidth && this.props.itemWidth < nativeEvent.layout.width) {
       this.itemsPerRow = Math.floor(nativeEvent.layout.width / this.props.itemWidth)
       this.blockWidth = nativeEvent.layout.width / this.itemsPerRow
